@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Quote,
+  FormContainer,
 } from "../styles/StyledComponents";
 
 const initialFormValues = {
@@ -32,13 +33,13 @@ export default function LoginForm() {
 
   const postNewLogin = (newLogin) => {
     axiosWithAuth()
-      .post("/auth/login", newLogin)
+      .post("/api/auth/login", newLogin)
       .then((res) => {
         window.localStorage.setItem("token", res.data.token);
         history.push("/home");
+        console.log("Success");
       })
       .catch((err) => {
-        debugger;
         console.log(err);
       });
   };
@@ -118,7 +119,7 @@ export default function LoginForm() {
   return (
     <div>
       <form onSubmit={submit}>
-        <div className="form-container">
+        <FormContainer>
           <Header>Login</Header>
 
           <Input
@@ -157,7 +158,7 @@ export default function LoginForm() {
               </Quote>
             );
           })}
-        </div>
+        </FormContainer>
       </form>
     </div>
   );

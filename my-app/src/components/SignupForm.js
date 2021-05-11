@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from "react";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import * as yup from "yup";
-import { Paragraph, Header, Button, Input } from "../styles/StyledComponents";
+import {
+  Paragraph,
+  Header,
+  Button,
+  Input,
+  FormContainer,
+  StyledDrop,
+  StyledLabel,
+} from "../styles/StyledComponents";
 
 const initialFormValues = {
-  id: "",
-  firstName: "",
-  lastName: "",
+  name: "",
+  email: "",
   username: "",
   password: "",
-  phoneNumber: "",
-  profileURL: "",
+  role: "",
 };
 
 const initialFormErrors = {
-  firstName: "",
-  lastName: "",
+  name: "",
+  email: "",
   username: "",
   password: "",
+  role: "",
 };
 
 export default function Form() {
@@ -26,15 +33,14 @@ export default function Form() {
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(true);
 
-  const postNewRegister = (newRegister) => {
+  const postNewUser = (newUser) => {
     axiosWithAuth()
-      .post("/auth/register", newRegister)
-      .then((newRegister) => {
-        setRegisters([...registers, newRegister.data]);
+      .post(`/api/auth/register`, newUser)
+      .then((res) => {
+        setRegisters([res.data, ...registers]);
         setFormValues(initialFormValues);
       })
       .catch((err) => {
-        debugger;
         console.log(err);
       });
   };
@@ -55,31 +61,31 @@ export default function Form() {
 
   const submit = (evt) => {
     evt.preventDefault();
-    const newRegister = {
+    const newUser = {
+      name: formValues.name.trim(),
+      email: formValues.email.trim(),
       username: formValues.username.trim(),
-      firstName: formValues.firstName.trim(),
-      lastName: formValues.lastName.trim(),
-      phoneNumber: formValues.phoneNumber.trim(),
       password: formValues.password.trim(),
+      role: formValues.role.trim(),
     };
-    postNewRegister(newRegister);
+    postNewUser(newUser);
   };
 
   const formSchema = yup.object().shape({
+    name: yup
+      .string()
+      .required("Must include name.")
+      .min(2, "First Name must be at least 2 characters long."),
+    email: yup.string().required("Must include email."),
     username: yup.string().required("Must include username."),
-    firstName: yup
-      .string()
-      .required("Must include First name")
-      .min(2, "First Name must be at least 2 characters long"),
-    lastName: yup.string().required("Must include Last Name"),
-    phoneNumber: yup
-      .string()
-      .required("Must include Phone Number")
-      .min(10, "Phone number must be at least 10 digits"),
     password: yup
       .string()
-      .required("Password is Required")
+      .required("Password is required.")
       .min(4, "Passwords must be at least 4 characters long."),
+    role: yup
+      .string()
+      .required("Must include role.")
+      .min(2, "Role must be at least 2 characters long."),
   });
 
   const validate = (name, value) => {
@@ -109,41 +115,32 @@ export default function Form() {
   return (
     <div>
       <form onSubmit={submit}>
-        <div className="form-container">
+        <FormContainer>
           <Header>Register Here!</Header>
+
+          <Input
+            type="text"
+            name="name"
+            placeholder="Enter Name"
+            value={formValues.name}
+            onChange={change}
+          />
+          <br />
+
+          <Input
+            type="text"
+            name="email"
+            placeholder="Enter Email"
+            value={formValues.email}
+            onChange={change}
+          />
+          <br />
 
           <Input
             type="text"
             name="username"
             placeholder="Enter Username"
             value={formValues.username}
-            onChange={change}
-          />
-          <br />
-
-          <Input
-            type="text"
-            name="firstName"
-            placeholder="Enter First Name"
-            value={formValues.firstName}
-            onChange={change}
-          />
-          <br />
-
-          <Input
-            type="text"
-            name="lastName"
-            placeholder="Enter Last Name"
-            value={formValues.lastName}
-            onChange={change}
-          />
-          <br />
-
-          <Input
-            type="tel"
-            name="phoneNumber"
-            placeholder="Enter Phone Number"
-            value={formValues.phoneNumber}
             onChange={change}
           />
           <br />
@@ -157,12 +154,31 @@ export default function Form() {
           />
           <br />
 
+          <StyledLabel>
+            Role:
+            <StyledDrop onChange={change} value={formValues.role} name="role">
+              <option value="">-Select a role-</option>
+              <option value="client">Client</option>
+              <option value="instructor">Instructor</option>
+            </StyledDrop>
+          </StyledLabel>
+
+          {/* 
+          <Input
+            type="text"
+            name="role"
+            placeholder="Enter Role"
+            value={formValues.role}
+            onChange={change}
+          />
+          <br /> */}
+
           <div className="errors-container">
+            <Paragraph>{formErrors.name}</Paragraph>
+            <Paragraph>{formErrors.email}</Paragraph>
             <Paragraph>{formErrors.username}</Paragraph>
-            <Paragraph>{formErrors.firstName}</Paragraph>
-            <Paragraph>{formErrors.lastName}</Paragraph>
-            <Paragraph>{formErrors.phoneNumber}</Paragraph>
             <Paragraph>{formErrors.password}</Paragraph>
+            <Paragraph>{formErrors.role}</Paragraph>
           </div>
           <br />
 
@@ -180,7 +196,7 @@ export default function Form() {
               );
             })}
           </div>
-        </div>
+        </FormContainer>
       </form>
     </div>
   );

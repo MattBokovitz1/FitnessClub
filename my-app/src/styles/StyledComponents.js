@@ -50,6 +50,12 @@ export const Logo = styled.div`
 
 // SignUp
 
+export const FormContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`;
+
 export const Header = styled.h2`
   font-size: 3rem;
   margin-bottom: 8%;
@@ -81,6 +87,18 @@ export const Quote = styled.div`
 export const H3 = styled.h3`
   font-size: 2rem;
   color: white;
+`;
+
+export const StyledDrop = styled.select`
+  margin: 1%;
+  border: none;
+  border-radius: 20px;
+  width: 15%;
+  height: 2.2vh;
+`;
+
+export const StyledLabel = styled.label`
+  margin: -2%;
 `;
 
 export const Paragraph = styled.p`
