@@ -11,8 +11,9 @@ const MyClasses = () => {
 
   const fetchClasses = () => {
     axiosWithAuth()
-      .get(`/api/auth/users/classes`)
-      .then((res) => setClassList(res.data))
+      .get(`/api/auth/users/classes/`)
+      .then((res) => setClassList(res.body))
+      .then(console.log(classList))
       .catch((err) => console.log(err));
   };
 
@@ -25,11 +26,12 @@ const MyClasses = () => {
       <div className="class-card">
         <Header>My Classes</Header>
         <Link to={"/add-class"}>
-          <Button>New Classes</Button>
+          <Button>New Class</Button>
         </Link>
-        {classList.map((clas) => {
-          return <ClassDetails key={clas.id} clas={clas} />;
-        })}
+        {classList &&
+          classList.map((clas) => {
+            return <ClassDetails key={clas.id} clas={clas} />;
+          })}
       </div>
     </>
   );

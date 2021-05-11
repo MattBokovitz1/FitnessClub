@@ -17,6 +17,8 @@ export const Nav = styled.nav`
   justify-content: space-between;
   background: #8db596;
   text-decoration: none;
+  position: fixed;
+  width: 100%;
 `;
 
 export const LinksDiv = styled.div`

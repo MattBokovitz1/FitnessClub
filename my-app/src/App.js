@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import MyClasses from "./components/MyClasses";
 import PrivateRoute from "./utils/PrivateRoute";
 import { AppProvider } from "./utils/AppContext";
+import AddClass from "./components/AddClass";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route exact path="/login" component={LoginForm} />
           <Redirect exact from="/reload" to="/" />
           <PrivateRoute exact path="/home" component={MyClasses} />
+          <PrivateRoute exact path="/add-class" component={AddClass} />
         </Switch>
       </div>
     </AppProvider>
