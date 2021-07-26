@@ -1,3 +1,3 @@
 # Fitness Club
 
-A fitness app where admins can create workout classes, and users can sign up for the classes.
+A fitness app where users can register as admins or users and then sign in. Admins can create, edit, and delete workout classes, and users can view the classes.

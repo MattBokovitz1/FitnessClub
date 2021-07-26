@@ -1,0 +1,23 @@
+{
+  "name": "fitnessclub",
+  "version": "1.0.0",
+  "description": "A fitness app where users can register as admins or users and then sign in. Admins can create, edit, and delete workout classes, and users can view the classes.",
+  "main": "index.js",
+  "dependencies": {
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MattBokovitz1/FitnessClub.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MattBokovitz1/FitnessClub/issues"
+  },
+  "homepage": "https://github.com/MattBokovitz1/FitnessClub#readme"
+}
