@@ -240,7 +240,8 @@ export const Forms = styled.form`
 
 export const Paragraph = styled.p`
   display: flex;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  padding: 0.5% 0 0.5% 0;
   box-sizing: border-box;
   text-decoration: none;
   color: white;
@@ -479,7 +480,7 @@ export const ExerciseImgInst = styled.img`
   margin: 0 auto;
   float: left;
   width: 100%;
-  height: 400px;
+  height: 350px;
   overflow: hidden;
 
   @media (max-width: 1000px) {
