@@ -1,2 +1,2 @@
 # AnywhereFitness
-A fitness app where admins can create workout classes, and users can sign up for the classes. 
+A fitness app where user can sign up and login as either admin or client. Admins can create, edit, and delete workout classes, and users can view the classes. 
