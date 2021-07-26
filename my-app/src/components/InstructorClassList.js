@@ -5,7 +5,7 @@ import { ClassListStyle } from "../styles/StyledComponents";
 import ClassCard from "./ClassCard";
 import { ClassContext } from "../App";
 import { Modal, Button } from "antd";
-import Navbar from "./Navbar";
+import Navbar from "./NavBar";
 import AddClass from "./AddClass";
 
 export default function InstructorClassList() {

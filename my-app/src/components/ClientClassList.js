@@ -12,7 +12,7 @@ import {
   Paragraph,
 } from "../styles/StyledComponents";
 import SearchForm from "./SearchForm";
-import NavBar from "./Navbar";
+import NavBar from "./NavBar";
 
 export default function ClassList() {
   const { clientClassList, setClientClassList, inputs } =

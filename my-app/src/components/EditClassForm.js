@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { ClassContext } from "../App";
-import Navbar from "./Navbar";
+import Navbar from "./NavBar";
 import {
   SignUpContainer,
   SignUpBox,
