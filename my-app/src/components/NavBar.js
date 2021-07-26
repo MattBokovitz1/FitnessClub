@@ -1,24 +1,18 @@
 import React from "react";
-import fitnessLogo from "../styles/fitnessLogo.png";
-import { LinksDiv, Links, Nav, Logo, H1 } from "../styles/StyledComponents";
+import { Nav, Links } from "../styles/StyledComponents";
+import { useHistory } from "react-router-dom";
 
-function NavBar() {
+export default function Navbar() {
+  const history = useHistory();
+
+  const logout = () => {
+    localStorage.clear("token");
+    localStorage.clear("username");
+    history.push("/");
+  };
   return (
     <Nav>
-      <Logo>
-        <Links to="/home">
-          <img src={fitnessLogo} alt="logo" width="50%" />
-        </Links>
-      </Logo>
-      <Links to="/">
-        <H1> Anywhere Fitness</H1>
-      </Links>
-      <LinksDiv>
-        <Links to="/login">Log In</Links>
-        <Links to="/signup">Sign Up</Links>
-      </LinksDiv>
+      <Links onClick={logout}>Logout</Links>
     </Nav>
   );
 }
-
-export default NavBar;

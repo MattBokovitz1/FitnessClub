@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import * as yup from "yup";
+import { useHistory } from "react-router-dom";
 import {
-  Paragraph,
-  Header,
-  Button,
-  Input,
-  FormContainer,
+  SmallOrangeButton,
+  SignUpInput,
   StyledDrop,
-  StyledLabel,
+  StyledDiv,
+  RegisterText,
+  StyledOption,
 } from "../styles/StyledComponents";
 
 const initialFormValues = {
@@ -30,6 +30,7 @@ const initialFormErrors = {
 export default function Form() {
   const [registers, setRegisters] = useState([]);
   const [formValues, setFormValues] = useState(initialFormValues);
+  const history = useHistory();
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(true);
 
@@ -39,6 +40,7 @@ export default function Form() {
       .then((res) => {
         setRegisters([res.data, ...registers]);
         setFormValues(initialFormValues);
+        history.push("/");
       })
       .catch((err) => {
         console.log(err);
@@ -115,88 +117,75 @@ export default function Form() {
   return (
     <div>
       <form onSubmit={submit}>
-        <FormContainer>
-          <Header>Register Here!</Header>
-
-          <Input
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            value={formValues.name}
+        <SignUpInput
+          type="text"
+          name="name"
+          placeholder="Enter Name"
+          value={formValues.name}
+          onChange={change}
+        />
+        <br />
+        <SignUpInput
+          type="text"
+          name="email"
+          placeholder="Enter Email"
+          value={formValues.email}
+          onChange={change}
+        />
+        <br />
+        <SignUpInput
+          type="text"
+          name="username"
+          placeholder="Enter Username"
+          value={formValues.username}
+          onChange={change}
+        />
+        <br />
+        <SignUpInput
+          type="text"
+          name="password"
+          placeholder="Enter Password"
+          value={formValues.password}
+          onChange={change}
+        />
+        <br />
+        <StyledDiv>
+          <StyledDrop
+            defaultValue=""
             onChange={change}
-          />
-          <br />
-
-          <Input
-            type="text"
-            name="email"
-            placeholder="Enter Email"
-            value={formValues.email}
-            onChange={change}
-          />
-          <br />
-
-          <Input
-            type="text"
-            name="username"
-            placeholder="Enter Username"
-            value={formValues.username}
-            onChange={change}
-          />
-          <br />
-
-          <Input
-            type="text"
-            name="password"
-            placeholder="Enter Password"
-            value={formValues.password}
-            onChange={change}
-          />
-          <br />
-
-          <StyledLabel>
-            Role:
-            <StyledDrop onChange={change} value={formValues.role} name="role">
-              <option value="">-Select a role-</option>
-              <option value="client">Client</option>
-              <option value="instructor">Instructor</option>
-            </StyledDrop>
-          </StyledLabel>
-
-          {/* 
-          <Input
-            type="text"
-            name="role"
-            placeholder="Enter Role"
             value={formValues.role}
-            onChange={change}
-          />
-          <br /> */}
-
-          <div className="errors-container">
-            <Paragraph>{formErrors.name}</Paragraph>
-            <Paragraph>{formErrors.email}</Paragraph>
-            <Paragraph>{formErrors.username}</Paragraph>
-            <Paragraph>{formErrors.password}</Paragraph>
-            <Paragraph>{formErrors.role}</Paragraph>
-          </div>
-          <br />
-
-          <Button disabled={disabled}>Click to Sign Up</Button>
-
-          <div className="register-container">
-            {registers.map((register) => {
-              if (!register) {
-                return <h3>Working on Finding Your Account</h3>;
-              }
+            name="role"
+          >
+            <StyledOption value=""> Select a Role </StyledOption>
+            <StyledOption value="user">user</StyledOption>
+            <StyledOption value="instructor">instructor</StyledOption>
+          </StyledDrop>
+        </StyledDiv>
+        <div className="errors-container">
+          <RegisterText>{formErrors.name}</RegisterText>
+          <RegisterText>{formErrors.email}</RegisterText>
+          <RegisterText>{formErrors.username}</RegisterText>
+          <RegisterText>{formErrors.password}</RegisterText>
+          <RegisterText>{formErrors.role}</RegisterText>
+        </div>
+        <br />
+        <SmallOrangeButton disabled={disabled}>
+          Click to Sign Up
+        </SmallOrangeButton>
+        <div className="register-container">
+          {registers.map((register) => {
+            if (!register) {
               return (
-                <div className="register-details">
-                  <h2>Your Registration Was Successful!</h2>
-                </div>
+                <RegisterText>Working on Finding Your Account</RegisterText>
               );
-            })}
-          </div>
-        </FormContainer>
+            }
+            return (
+              <div className="register-details">
+                <RegisterText>Your Registration Was Successful!</RegisterText>
+              </div>
+            );
+          })}
+        </div>
       </form>
     </div>
   );

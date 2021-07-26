@@ -1,30 +1,52 @@
-import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import LoginForm from "./components/LoginForm";
-import SignupForm from "./components/SignupForm";
-import Home from "./components/Home";
-import MyClasses from "./components/MyClasses";
-import PrivateRoute from "./utils/PrivateRoute";
-import { AppProvider } from "./utils/AppContext";
-import AddClass from "./components/AddClass";
+import React, { useState, createContext } from "react";
+import "./App.css";
 
-const App = () => {
-  return (
-    <AppProvider>
-      <div className="App">
-        <NavBar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/signup" component={SignupForm} />
-          <Route exact path="/login" component={LoginForm} />
-          <Redirect exact from="/reload" to="/" />
-          <PrivateRoute exact path="/home" component={MyClasses} />
-          <PrivateRoute exact path="/add-class" component={AddClass} />
-        </Switch>
-      </div>
-    </AppProvider>
-  );
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import SignUpForm from "./components/SignupForm";
+
+import LoginForm from "./components/LoginForm";
+import ClientClassList from "./components/ClientClassList";
+import InstructorClassList from "./components/InstructorClassList";
+import PrivateRoute from "./utils/PrivateRoute";
+import AddClassForm from "./components/AddClass";
+import EditClassForm from "./components/EditClassForm";
+
+export const initialValues = {
+  name: "",
+  instructor_name: localStorage.getItem("username"),
+  type: "",
+  date: "",
+  duration: "",
+  intensity: "low",
+  location: "",
+  signedUp: "",
+  max_size: "",
 };
+
+export const ClassContext = createContext();
+function App() {
+  const [clientClassList, setClientClassList] = useState([]);
+  const [inputs, setInputs] = useState(initialValues);
+
+  return (
+    <div>
+      <Router>
+        <ClassContext.Provider
+          value={{ clientClassList, setClientClassList, inputs, setInputs }}
+        >
+          <div className="App">
+            <Route exact path="/" component={LoginForm} />
+            <Route exact path="/signup" component={SignUpForm} />
+            <PrivateRoute path="/Instructor" component={InstructorClassList} />
+            <PrivateRoute path="/add-class" component={AddClassForm} />
+            <PrivateRoute path="/update-class/:id" component={EditClassForm} />
+            <PrivateRoute path="/User" component={ClientClassList} />
+          </div>
+        </ClassContext.Provider>
+      </Router>
+    </div>
+  );
+}
 
 export default App;

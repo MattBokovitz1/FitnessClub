@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import axiosWithAuth from "../utils/axiosWithAuth";
-import { Input, Header, Button } from "../styles/StyledComponents";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { StyledDiv } from "../styles/StyledComponents";
+import { Input, Button } from "antd";
 
 const initialFormValues = {
   name: "",
@@ -12,14 +12,14 @@ const initialFormValues = {
   location: "",
   date: "",
   max_size: "",
-  duration: "",
+  duration: 10,
   signedUp: false,
+  img_url: "",
 };
 
 const AddClass = () => {
   const [formValues, setFormValues] = useState(initialFormValues);
   const history = useHistory();
-  const { register, handleSubmit, errors } = useForm();
 
   const handleChanges = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -30,82 +30,115 @@ const AddClass = () => {
     axiosWithAuth()
       .post("/api/auth/instructor/classes", formValues)
       .then(() => {
-        history.push("/reload");
+        console.log(formValues);
+        history.push("/user");
+        setFormValues(initialFormValues);
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <>
-      <div className="class-form">
-        <Header>Add Class</Header>
-        <form onSubmit={handleSubmit(addClass)}>
+      <StyledDiv>
+        <form onSubmit={addClass}>
           <Input
+            style={{ width: 300, margin: 5 }}
             type="text"
             name="name"
             placeholder="Name"
             value={formValues.name}
             onChange={handleChanges}
           />
+
           <Input
+            style={{ width: 300, margin: 5 }}
             type="text"
             name="instructor_name"
             placeholder="Instructor Name"
             value={formValues.instructor_name}
             onChange={handleChanges}
           />
+
           <Input
+            style={{ width: 300, margin: 5 }}
             type="text"
             name="type"
             placeholder="Type"
             value={formValues.type}
             onChange={handleChanges}
           />
+
           <Input
+            style={{ width: 300, margin: 5 }}
             type="text"
             name="intensity"
             placeholder="Intensity"
             value={formValues.intensity}
             onChange={handleChanges}
           />
+
           <Input
-            type="text"
-            name="location"
-            placeholder="Location"
-            value={formValues.location}
-            onChange={handleChanges}
-          />
-          <Input
+            style={{ width: 300, margin: 5 }}
             type="text"
             name="date"
             placeholder="Date"
             value={formValues.date}
             onChange={handleChanges}
           />
+
           <Input
+            style={{ width: 300, margin: 5 }}
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={formValues.location}
+            onChange={handleChanges}
+          />
+
+          <Input
+            style={{ width: 300, margin: 5 }}
             type="text"
             name="max_size"
             placeholder="Max Size"
             value={formValues.max_size}
             onChange={handleChanges}
           />
+
           <Input
-            type="text"
+            style={{ width: 300, margin: 5 }}
+            type="float"
             name="duration"
             placeholder="Duration"
-            value={formValues.Duration}
+            value={formValues.duration}
+            onChange={handleChanges}
+          />
+
+          <Input
+            style={{ width: 300, margin: 5 }}
+            type="float"
+            name="img_url"
+            placeholder="Image URL"
+            value={formValues.img_url}
             onChange={handleChanges}
           />
           <Input
-            type="checkbox"
-            name="signedUp"
-            placeholder="Signed Up"
+            style={{ width: 300, margin: 5 }}
+            type="Boolean"
+            name=""
+            placeholder="=Signed Up"
             value={formValues.signedUp}
             onChange={handleChanges}
           />
-          <Button>Add Class</Button>
+
+          <Button
+            style={{ width: 200, margin: 10 }}
+            type="primary"
+            onClick={addClass}
+          >
+            Add Class
+          </Button>
         </form>
-      </div>
+      </StyledDiv>
     </>
   );
 };

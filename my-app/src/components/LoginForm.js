@@ -1,165 +1,163 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import axiosWithAuth from "../utils/axiosWithAuth";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import * as yup from "yup";
+import workout from "../assets/workout.png";
+import { useHistory } from "react-router-dom";
+import { ClassContext } from "../App";
+import SignupForm from "./SignupForm";
+import { Button, Modal, Input } from "antd";
+
 import {
-  Paragraph,
-  Header,
-  Button,
-  Input,
-  Quote,
+  FrontImage,
+  Title,
+  OrangeButton,
+  Forms,
   FormContainer,
+  LeftContainer,
+  LoginPage,
+  LoginBox,
 } from "../styles/StyledComponents";
 
-const initialFormValues = {
-  username: "",
-  password: "",
-};
+const LoginForm = () => {
+  const initialFormValues = {
+    username: "",
+    password: "",
+  };
 
-const initialFormErrors = {
-  username: "",
-  password: "",
-};
-
-export default function LoginForm() {
+  // STATE:
+  //post
+  const [post, setPost] = useState();
+  //form
   const [formValues, setFormValues] = useState(initialFormValues);
-  const [formErrors, setFormErrors] = useState(initialFormErrors);
-  const [disabled, setDisabled] = useState(true);
-  const [quotes, setQuotes] = useState([]);
+  //button
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const { inputs, setInputs } = useContext(ClassContext);
+  const [visState, setVisState] = useState("hidden");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    history.push("/");
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  //INPUT CHANGE
+  const data = [];
+  const inputChange = (e) => {
+    e.persist();
+    const newFormData = {
+      ...formValues,
+      [e.target.name]:
+        e.target.type === "checkbox" ? e.target.checked : e.target.value,
+    };
+
+    setFormValues(newFormData);
+  };
+
   const history = useHistory();
 
-  // Login
-
-  const postNewLogin = (newLogin) => {
-    axiosWithAuth()
-      .post("/api/auth/login", newLogin)
+  //SUBMIT
+  const formSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem("username", formValues.username);
+    setInputs({ ...inputs, instructor_name: localStorage.getItem("username") });
+    axios("https://fitness-club-be.herokuapp.com/api/auth/login", formValues)
       .then((res) => {
-        window.localStorage.setItem("token", res.data.token);
-        history.push("/home");
-        console.log("Success");
+        console.log(res);
+        setPost(res.data);
+        data.push(post);
+        setFormValues(initialFormValues);
+        localStorage.setItem("token", res.data.token);
+        history.push(`/${res.data.role}`);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const change = (evt) => {
-    const { name, value, type, checked } = evt.target;
-    const valueToUse = type === "checkbox" ? checked : value;
-    inputChange(name, valueToUse);
-  };
-
-  const inputChange = (name, value) => {
-    validate(name, value);
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-  };
-
-  const submit = (evt) => {
-    evt.preventDefault();
-    const newLogin = {
-      username: formValues.username.trim(),
-      password: formValues.password.trim(),
-    };
-    postNewLogin(newLogin);
-  };
-
-  // Fetch Quote
-
-  const fetchQuote = () => {
-    axios
-      .get("https://quotes.rest/qod?language=en")
-      .then((res) => {
-        setQuotes(res.data.contents.quotes);
-      })
-      .catch((err) => console.log(err));
-  };
+  //Disable button if invalid inputs
 
   useEffect(() => {
-    fetchQuote();
-  }, []);
-
-  // Form Validation
-
-  const formSchema = yup.object().shape({
-    username: yup.string().required("Must include username."),
-    password: yup
-      .string()
-      .required("Password is Required")
-      .min(4, "Passwords must be at least 4 characters long."),
-  });
-
-  const validate = (name, value) => {
-    yup
-      .reach(formSchema, name)
-      .validate(value)
-      .then((valid) => {
-        setFormErrors({
-          ...formErrors,
-          [name]: "",
-        });
-      })
-      .catch((err) => {
-        setFormErrors({
-          ...formErrors,
-          [name]: err.errors[0],
-        });
-      });
-  };
-
-  useEffect(() => {
-    formSchema.isValid(formValues).then((valid) => {
-      setDisabled(!valid);
-    });
-  });
+    if (formValues.username.length >= 3 && formValues.password.length > 3) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [formValues]);
 
   return (
     <div>
-      <form onSubmit={submit}>
+      <LoginPage>
+        <LeftContainer>
+          <FrontImage src={workout} />
+        </LeftContainer>
         <FormContainer>
-          <Header>Login</Header>
+          <Title>Fitness Club</Title>
 
-          <Input
-            type="text"
-            name="username"
-            placeholder="Enter Your Username"
-            value={formValues.username}
-            onChange={change}
-          />
-          <br />
+          <Forms onSubmit={formSubmit}>
+            <LoginBox>
+              <Input
+                style={{ margin: 10, width: 200 }}
+                type="username"
+                name="username"
+                placeholder="username"
+                value={formValues.username}
+                onChange={inputChange}
+                data-cy="username"
+              />
 
-          <Input
-            type="password"
-            name="password"
-            placeholder="Enter Your Password"
-            value={formValues.password}
-            onChange={change}
-          />
-          <br />
+              <br />
+              <Input
+                style={{ margin: 10, width: 200 }}
+                type="password"
+                name="password"
+                placeholder="password"
+                value={formValues.password}
+                onChange={inputChange}
+                data-cy="password"
+              />
 
-          <div className="errors-container">
-            <Paragraph>{formErrors.username}</Paragraph>
-            <Paragraph>{formErrors.password}</Paragraph>
-          </div>
-          <br />
+              <div className="button">
+                <OrangeButton
+                  style={{ margin: 20 }}
+                  type="submit"
+                  disabled={buttonDisabled}
+                  color="warning"
+                  data-cy="submit"
+                  onClick={() => {
+                    setVisState(visState);
+                  }}
+                >
+                  Login
+                </OrangeButton>
+              </div>
+            </LoginBox>
+            <>
+              <Button style={{ margin: 30 }} onClick={showModal}>
+                Create New Account
+              </Button>
 
-          <Button disabled={disabled}>Click to Log In</Button>
-
-          {quotes.map((quote) => {
-            return (
-              <Quote>
-                <div key={quote.id}>
-                  <Paragraph>"{quote.quote}"</Paragraph>
-                  <Paragraph>{quote.author}</Paragraph>
-                </div>
-              </Quote>
-            );
-          })}
+              <Modal
+                title="Register Here"
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={[null]}
+              >
+                <SignupForm />
+              </Modal>
+            </>
+          </Forms>
         </FormContainer>
-      </form>
+      </LoginPage>
     </div>
   );
-}
+};
+
+export default LoginForm;
