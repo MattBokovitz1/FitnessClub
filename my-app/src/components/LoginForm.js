@@ -67,7 +67,8 @@ const LoginForm = () => {
     e.preventDefault();
     localStorage.setItem("username", formValues.username);
     setInputs({ ...inputs, instructor_name: localStorage.getItem("username") });
-    axios("https://fitness-club-be.herokuapp.com/api/auth/login", formValues)
+    axios
+      .post("http://localhost:5001/api/auth/login", formValues)
       .then((res) => {
         console.log(res);
         setPost(res.data);
