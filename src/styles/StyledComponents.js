@@ -493,3 +493,13 @@ export const ExerciseImgInst = styled.img`
     width: 100%;
   }
 `;
+
+export const InstParagraph = styled.p`
+  display: flex;
+  padding: 1% 0 1% 0;
+  font-size: 1rem;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: white;
+  text-align: left;
+`;

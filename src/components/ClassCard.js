@@ -6,7 +6,7 @@ import {
   IndividualExerciseInst,
   LeftDescriptionInst,
   ExerciseHeader,
-  Paragraph,
+  InstParagraph,
 } from "../styles/StyledComponents";
 import { Button } from "antd";
 export default function ClassCard({
@@ -31,14 +31,14 @@ export default function ClassCard({
     <IndividualExerciseInst>
       <LeftDescriptionInst>
         <ExerciseHeader>{cls.name}</ExerciseHeader>
-        <Paragraph>Type of class: {cls.type}</Paragraph>
-        <Paragraph>Intensity: {cls.intensity}</Paragraph>
-        <Paragraph>Instructor: {cls.instructor_name}</Paragraph>
-        <Paragraph>Date: {cls.date}</Paragraph>
-        <Paragraph>Duration: {cls.duration}</Paragraph>
-        <Paragraph>Location: {cls.location}</Paragraph>
-        <Paragraph>Registered attendees: {cls.signedUp}</Paragraph>
-        <Paragraph>Maximum class size: {cls.max_size}</Paragraph>
+        <InstParagraph>Type of class: {cls.type}</InstParagraph>
+        <InstParagraph>Intensity: {cls.intensity}</InstParagraph>
+        <InstParagraph>Instructor: {cls.instructor_name}</InstParagraph>
+        <InstParagraph>Date: {cls.date}</InstParagraph>
+        <InstParagraph>Duration: {cls.duration}</InstParagraph>
+        <InstParagraph>Location: {cls.location}</InstParagraph>
+        <InstParagraph>Registered attendees: {cls.signedUp}</InstParagraph>
+        <InstParagraph>Maximum class size: {cls.max_size}</InstParagraph>
         <Button
           style={{ margin: 10 }}
           onClick={() => history.push(`/update-class/${cls.id}`)}
