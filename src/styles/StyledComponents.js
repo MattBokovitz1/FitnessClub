@@ -497,7 +497,7 @@ export const ExerciseImgInst = styled.img`
 export const InstParagraph = styled.p`
   display: flex;
   padding: 1% 0 1% 0;
-  font-size: 1rem;
+  font-size: 1.3rem;
   box-sizing: border-box;
   text-decoration: none;
   color: white;
