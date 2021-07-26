@@ -477,10 +477,9 @@ export const ExerciseImgInst = styled.img`
   justify-content: space-evenly;
   align-content: center;
   margin: 0 auto;
-  padding: 15% 0 0 0;
   float: left;
   width: 100%;
-  height: 450px;
+  height: 400px;
   overflow: hidden;
 
   @media (max-width: 1000px) {
